@@ -10,11 +10,11 @@ data class Task(
     @SerializedName("task_id")
     val taskId: Int,
     @SerializedName("task_detail")
-    val taskDetail: TaskDetailResponse
+    val taskDetail: TaskDetail
 )
 
-data class TaskDetailResponse(
+data class TaskDetail(
     val title: String,
     val description: String,
-    val date: String? = null // Optional, as date is not present in all tasks
+    val date: String
 )

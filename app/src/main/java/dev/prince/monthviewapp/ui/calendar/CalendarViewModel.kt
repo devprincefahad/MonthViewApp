@@ -1,9 +1,9 @@
 package dev.prince.monthviewapp.ui.calendar
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.prince.monthviewapp.models.DeleteTaskRequest
 import dev.prince.monthviewapp.models.Task
 import dev.prince.monthviewapp.models.TaskDetail
 import dev.prince.monthviewapp.models.TaskRequest
@@ -19,34 +19,60 @@ class CalendarViewModel @Inject constructor(
     private val apiService: ApiService
 ) : ViewModel() {
 
-    private val _taskList = MutableStateFlow<List<Task>>(emptyList())
-    val taskList: StateFlow<List<Task>> = _taskList
+    private val _taskListState = MutableStateFlow<List<Task>>(emptyList())
+    val taskListState: StateFlow<List<Task>> = _taskListState
 
-    private val _taskAddStatus = MutableStateFlow<String?>(null)
-    val taskAddStatus: StateFlow<String?> = _taskAddStatus
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
-    fun addTask(userId: Int, taskDetail: TaskDetail) {
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
+    init {
+        fetchTasks(1111)
+    }
+
+    private fun fetchTasks(userId: Int) {
         viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
             try {
-                val response = apiService.storeTask(TaskRequest(userId, taskDetail))
-                if (response.status == "success") {
-                    _taskAddStatus.value = "Task added successfully!"
-                } else {
-                    _taskAddStatus.value = "Failed to add task"
-                }
+                val response = apiService.getTaskList(UserRequest(userId))
+                _taskListState.value = response.tasks
             } catch (e: Exception) {
-                _taskAddStatus.value = "Error adding task: ${e.message}"
+                _errorMessage.value = "Failed to fetch tasks: ${e.message}"
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
-    fun getTasks(userId: Int) {
+    fun addTask(userId: Int, task: TaskDetail) {
         viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
             try {
-                val response = apiService.getTaskList(UserRequest(userId))
-                _taskList.value = response.tasks
+                apiService.storeTask(TaskRequest(userId, task))
+                fetchTasks(userId)
             } catch (e: Exception) {
-                _taskAddStatus.value = "Error fetching tasks: ${e.message}"
+                _errorMessage.value = e.message ?: "An unexpected error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun deleteTask(userId: Int, taskId: Int) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+            try {
+                apiService.deleteTask(DeleteTaskRequest(userId, taskId))
+                fetchTasks(userId) // Refresh tasks after deleting one
+            } catch (e: Exception) {
+                _errorMessage.value = e.message ?: "An unexpected error occurred"
+            } finally {
+                _isLoading.value = false
             }
         }
     }

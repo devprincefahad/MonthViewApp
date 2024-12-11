@@ -7,9 +7,3 @@ data class TaskRequest(
     val userId: Int,
     val task: TaskDetail
 )
-
-data class TaskDetail(
-    val title: String,
-    val description: String,
-    val date: String
-)

@@ -12,7 +12,7 @@ interface ApiService {
     @POST("/api/storeCalendarTask")
     suspend fun storeTask(@Body request: TaskRequest): SuccessResponse
 
-    @POST("/api/getCalendarTaskLists")
+    @POST("/api/getCalendarTaskList")
     suspend fun getTaskList(@Body request: UserRequest): TaskResponse
 
     @POST("/api/deleteCalendarTask")

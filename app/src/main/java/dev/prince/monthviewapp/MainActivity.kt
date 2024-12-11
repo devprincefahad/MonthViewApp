@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
 import dev.prince.monthviewapp.ui.calendar.CalendarScreen
 import dev.prince.monthviewapp.ui.theme.MonthViewAppTheme
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

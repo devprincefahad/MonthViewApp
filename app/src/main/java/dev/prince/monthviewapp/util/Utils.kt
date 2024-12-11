@@ -15,7 +15,6 @@ fun getDaysInMonth(year: Int, month: Int): List<String> {
 
     val days = mutableListOf<String>()
 
-    // Add empty strings for days before the first day
     for (i in 1 until firstDayOfMonth) {
         days.add("")
     }
