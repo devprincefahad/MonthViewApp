@@ -30,6 +30,10 @@ import dev.prince.monthviewapp.util.getMonthName
 fun CalendarView(
     year: Int,
     month: Int,
+    currentYear: Int,
+    currentMonth: Int,
+    currentDay: Int,
+    onDateClick: (String) -> Unit
 ) {
     val days = getDaysInMonth(year, month)
 
@@ -59,21 +63,33 @@ fun CalendarView(
         ) {
             items(days.size) { index ->
                 val day = days[index]
+                val isToday = if (year == currentYear && month == currentMonth && day == currentDay.toString()) {
+                    true
+                } else {
+                    false
+                }
                 Box(
                     modifier = Modifier
                         .size(48.dp)
                         .padding(4.dp)
-                        .background(if (day.isNotEmpty()) Color.LightGray else Color.Transparent)
+                        .background(
+                            color = when {
+                                isToday -> Color.Blue
+                                day.isNotEmpty() -> Color.LightGray
+                                else -> Color.Transparent
+                            }
+                        )
                         .clickable(enabled = day.isNotEmpty()) {
                             if (day.isNotEmpty()) {
-//                                onDateClick("$year-$month-$day")
+                                onDateClick("$year-$month-$day")
                             }
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = day,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = if (isToday) Color.White else Color.Black
                     )
                 }
             }

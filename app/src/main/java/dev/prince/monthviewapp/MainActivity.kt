@@ -19,14 +19,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MonthViewAppTheme {
-                val currentYear = LocalDate.now().year
-                val currentMonth = LocalDate.now().monthValue
 
-                CalendarScreen(
-                    selectedYear = currentYear,
-                    selectedMonth = currentMonth,
-                    userId = 1739
-                )
+                CalendarScreen()
             }
         }
     }
