@@ -10,5 +10,6 @@ data class TaskRequest(
 
 data class TaskDetail(
     val title: String,
-    val description: String
+    val description: String,
+    val date: String
 )
