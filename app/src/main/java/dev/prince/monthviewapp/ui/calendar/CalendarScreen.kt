@@ -136,8 +136,9 @@ fun CalendarScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Tasks for $selectedDate",
-                modifier = Modifier.padding(bottom = 8.dp)
+                text = "${filteredTasks.size} ${if (filteredTasks.size == 1) "task" else "tasks"} for $selectedDate",
+                modifier = Modifier.padding(bottom = 8.dp),
+                fontSize = 16.sp
             )
 
             if (filteredTasks.isEmpty()) {
