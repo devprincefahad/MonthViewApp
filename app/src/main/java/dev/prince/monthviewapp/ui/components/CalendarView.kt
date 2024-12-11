@@ -28,8 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.prince.monthviewapp.R
 import dev.prince.monthviewapp.util.getDaysInMonth
 import dev.prince.monthviewapp.util.getMonthName
@@ -51,34 +53,42 @@ fun CalendarView(
     val days = getDaysInMonth(year, month)
     val allDays = days.map { it to true }
 
-    Column(
-        modifier = Modifier.padding(16.dp)
-        ) {
+    Column {
 
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Row(
+        Box(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            contentAlignment = Alignment.Center
         ) {
-            Text(text = "${getMonthName(month)} $year")
 
-            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "${getMonthName(month)} $year",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
 
-            IconButton(
-                onClick = { showTaskModal = true }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
-                    contentDescription = "Add Task"
-                )
+                IconButton(
+                    onClick = { showTaskModal = true }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(26.dp),
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = "Add Task"
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
             daysOfWeek.forEach { day ->
                 Text(text = day, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
