@@ -32,7 +32,7 @@ class CalendarViewModel @Inject constructor(
         fetchTasks(1111)
     }
 
-    private fun fetchTasks(userId: Int) {
+    fun fetchTasks(userId: Int) {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
