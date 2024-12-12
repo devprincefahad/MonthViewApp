@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.prince.monthviewapp.R
+import dev.prince.monthviewapp.ui.theme.poppinsFamily
 import dev.prince.monthviewapp.util.getDaysInMonth
 import dev.prince.monthviewapp.util.getMonthName
 
@@ -64,7 +66,8 @@ fun CalendarView(
                 text = "${getMonthName(month)} $year",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                fontFamily = poppinsFamily
             )
 
             Row(
@@ -91,7 +94,12 @@ fun CalendarView(
         ) {
             val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
             daysOfWeek.forEach { day ->
-                Text(text = day, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                Text(
+                    text = day,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontFamily = poppinsFamily
+                )
             }
         }
 
@@ -114,7 +122,7 @@ fun CalendarView(
                         .padding(4.dp)
                         .border(
                             width = if (isSelected) 2.dp else 0.dp,
-                            color = if (isSelected) Color.Blue else Color.Transparent,
+                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
                             shape = RectangleShape
                         )
                         .clickable(enabled = day.isNotEmpty()) {
@@ -129,9 +137,10 @@ fun CalendarView(
                         text = day,
                         textAlign = TextAlign.Center,
                         color = when {
-                            isToday -> Color.Blue
+                            isToday -> MaterialTheme.colorScheme.primary
                             else -> Color.Black
-                        }
+                        },
+                        fontFamily = poppinsFamily
                     )
                 }
             }
@@ -149,4 +158,3 @@ fun CalendarView(
         }
     }
 }
-

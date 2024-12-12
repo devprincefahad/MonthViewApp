@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import dev.prince.monthviewapp.ui.theme.poppinsFamily
 
 @Composable
 fun AddTaskDialog(
@@ -31,27 +34,49 @@ fun AddTaskDialog(
     var description by remember { mutableStateOf("") }
 
     Dialog(onDismissRequest = onDismiss) {
-        Card {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
             Column(Modifier.padding(16.dp)) {
-                Text("Add Task for $date")
+                Text(
+                    "Add Task for $date",
+                    fontFamily = poppinsFamily
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Task Title") }
+                    label = {
+                        Text(
+                            "Task Title",
+                            fontFamily = poppinsFamily
+                        )
+                    }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Task Description") }
+                    label = {
+                        Text(
+                            "Task Description",
+                            fontFamily = poppinsFamily
+                        )
+                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Button(onClick = onDismiss) { Text("Cancel") }
+                    Button(onClick = onDismiss) {
+                        Text(
+                            "Cancel",
+                            fontFamily = poppinsFamily
+                        )
+                    }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
                         onClick = {
@@ -59,7 +84,12 @@ fun AddTaskDialog(
                                 onTaskSave(title, description)
                             }
                         }
-                    ) { Text("Save") }
+                    ) {
+                        Text(
+                            "Save",
+                            fontFamily = poppinsFamily
+                        )
+                    }
                 }
             }
         }

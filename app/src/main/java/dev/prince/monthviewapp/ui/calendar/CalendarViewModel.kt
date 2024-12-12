@@ -40,7 +40,7 @@ class CalendarViewModel @Inject constructor(
                 val response = apiService.getTaskList(UserRequest(userId))
                 _taskListState.value = response.tasks
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to fetch tasks: ${e.message}"
+                handleException(e)
             } finally {
                 _isLoading.value = false
             }
@@ -55,7 +55,7 @@ class CalendarViewModel @Inject constructor(
                 apiService.storeTask(TaskRequest(userId, task))
                 fetchTasks(userId)
             } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "An unexpected error occurred"
+                handleException(e)
             } finally {
                 _isLoading.value = false
             }
@@ -68,12 +68,31 @@ class CalendarViewModel @Inject constructor(
             _errorMessage.value = null
             try {
                 apiService.deleteTask(DeleteTaskRequest(userId, taskId))
-                fetchTasks(userId) // Refresh tasks after deleting one
+                fetchTasks(userId)
             } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "An unexpected error occurred"
+                handleException(e)
             } finally {
                 _isLoading.value = false
             }
         }
     }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    private fun handleException(e: Exception) {
+        when (e) {
+            is java.net.UnknownHostException -> {
+                _errorMessage.value = "No internet connection. Please check your network."
+            }
+            is java.net.SocketTimeoutException -> {
+                _errorMessage.value = "Request timed out. Please try again later."
+            }
+            else -> {
+                _errorMessage.value = e.message ?: "An unexpected error occurred"
+            }
+        }
+    }
+
 }
