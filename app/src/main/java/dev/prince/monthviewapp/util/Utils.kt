@@ -11,15 +11,14 @@ import java.util.*
 fun getDaysInMonth(year: Int, month: Int): List<String> {
     val yearMonth = YearMonth.of(year, month)
     val daysInMonth = yearMonth.lengthOfMonth()
-    val firstDayOfMonth = LocalDate.of(year, month, 1).dayOfWeek.value
+    val firstDayOfMonth = LocalDate.of(year, month, 1).dayOfWeek.value % 7
 
     val days = mutableListOf<String>()
 
-    for (i in 1 until firstDayOfMonth) {
+    for (i in 1..firstDayOfMonth) {
         days.add("")
     }
 
-    // Add actual days of the month
     for (day in 1..daysInMonth) {
         days.add(day.toString())
     }
